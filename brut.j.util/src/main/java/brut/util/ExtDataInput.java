@@ -45,9 +45,9 @@ public class ExtDataInput extends DataInputDelegate {
 
     public void skipCheckInt(int expected1, int expected2) throws IOException {
         int got = readInt();
-        if (got != expected) {
+        if (got != expected1 && got != expected2) {
             Logger.getGlobal().warning(String.format(
-                    "Expected: 0x%08x, got: 0x%08x", expected, got));
+                    "Expected: Expected: 0x%08x or 0x%08x, got: 0x%08x", expected1, expected2, got));
         }
     }
 

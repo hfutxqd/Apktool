@@ -77,7 +77,7 @@ public class Androlib {
             LOGGER.info("Copying raw " + filename + " file...");
             apkFile.getDirectory().copyToDir(outDir, filename);
         } catch (DirectoryException ex) {
-            throw new AndrolibException(ex);
+            LOGGER.warning(ex.getMessage());
         }
     }
 
@@ -95,7 +95,7 @@ public class Androlib {
             LOGGER.info("Baksmaling " + filename + "...");
             SmaliDecoder.decode(apkFile, smaliDir, filename, bakdeb, api);
         } catch (BrutException ex) {
-            throw new AndrolibException(ex);
+            LOGGER.warning(ex.getMessage());
         }
     }
 

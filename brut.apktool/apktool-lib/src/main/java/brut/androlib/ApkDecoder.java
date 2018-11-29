@@ -139,14 +139,18 @@ public class ApkDecoder {
             }
 
             if (hasSources()) {
-                switch (mDecodeSources) {
-                    case DECODE_SOURCES_NONE:
-                        mAndrolib.decodeSourcesRaw(mApkFile, outDir, "classes.dex");
-                        break;
-                    case DECODE_SOURCES_SMALI:
-                    case DECODE_SOURCES_SMALI_ONLY_MAIN_CLASSES:
-                        mAndrolib.decodeSourcesSmali(mApkFile, outDir, "classes.dex", mBakDeb, mApi);
-                        break;
+                try {
+                    switch (mDecodeSources) {
+                        case DECODE_SOURCES_NONE:
+                            mAndrolib.decodeSourcesRaw(mApkFile, outDir, "classes.dex");
+                            break;
+                        case DECODE_SOURCES_SMALI:
+			case DECODE_SOURCES_SMALI_ONLY_MAIN_CLASSES:
+                            mAndrolib.decodeSourcesSmali(mApkFile, outDir, "classes.dex", mBakDeb, mApi);
+                            break;
+                    }
+                } catch (Throwable e) {
+                    LOGGER.warning(e.getMessage());
                 }
             }
 
@@ -156,20 +160,24 @@ public class ApkDecoder {
                 for (String file : files) {
                     if (file.endsWith(".dex")) {
                         if (! file.equalsIgnoreCase("classes.dex")) {
-                            switch(mDecodeSources) {
-                                case DECODE_SOURCES_NONE:
-                                    mAndrolib.decodeSourcesRaw(mApkFile, outDir, file);
-                                    break;
-                                case DECODE_SOURCES_SMALI:
-                                    mAndrolib.decodeSourcesSmali(mApkFile, outDir, file, mBakDeb, mApi);
-                                    break;
-                                case DECODE_SOURCES_SMALI_ONLY_MAIN_CLASSES:
-                                    if (file.startsWith("classes") && file.endsWith(".dex")) {
-                                        mAndrolib.decodeSourcesSmali(mApkFile, outDir, file, mBakDeb, mApi);
-                                    } else {
+                            try {
+                                switch(mDecodeSources) {
+                                    case DECODE_SOURCES_NONE:
                                         mAndrolib.decodeSourcesRaw(mApkFile, outDir, file);
-                                    }
-                                    break;
+                                        break;
+                                    case DECODE_SOURCES_SMALI:
+                                        mAndrolib.decodeSourcesSmali(mApkFile, outDir, file, mBakDeb, mApi);
+                                        break;
+				    case DECODE_SOURCES_SMALI_ONLY_MAIN_CLASSES:
+                                     	if (file.startsWith("classes") && file.endsWith(".dex")) {
+                                    	    mAndrolib.decodeSourcesSmali(mApkFile, outDir, file, mBakDeb, mApi);
+					 } else {
+                                       	    mAndrolib.decodeSourcesRaw(mApkFile, outDir, file);
+                                     	}   
+                                     	break;
+                                }
+                            } catch (Throwable e) {
+                                LOGGER.warning(e.getMessage());
                             }
                         }
                     }
