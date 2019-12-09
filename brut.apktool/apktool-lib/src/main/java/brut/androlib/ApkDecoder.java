@@ -1,18 +1,18 @@
 /**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
+ * Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package brut.androlib;
 
@@ -63,7 +63,8 @@ public class ApkDecoder {
         if (mApkFile != null) {
             try {
                 mApkFile.close();
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
         }
 
         mApkFile = new ExtFile(apkFile);
@@ -131,8 +132,7 @@ public class ApkDecoder {
                     if (mDecodeResources == DECODE_RESOURCES_FULL
                             || mForceDecodeManifest == FORCE_DECODE_MANIFEST_FULL) {
                         mAndrolib.decodeManifestFull(mApkFile, outDir, getResTable());
-                    }
-                    else {
+                    } else {
                         mAndrolib.decodeManifestRaw(mApkFile, outDir);
                     }
                 }
@@ -145,7 +145,7 @@ public class ApkDecoder {
                             mAndrolib.decodeSourcesRaw(mApkFile, outDir, "classes.dex");
                             break;
                         case DECODE_SOURCES_SMALI:
-			case DECODE_SOURCES_SMALI_ONLY_MAIN_CLASSES:
+                        case DECODE_SOURCES_SMALI_ONLY_MAIN_CLASSES:
                             mAndrolib.decodeSourcesSmali(mApkFile, outDir, "classes.dex", mBakDeb, mApi);
                             break;
                     }
@@ -159,22 +159,22 @@ public class ApkDecoder {
                 Set<String> files = mApkFile.getDirectory().getFiles(true);
                 for (String file : files) {
                     if (file.endsWith(".dex")) {
-                        if (! file.equalsIgnoreCase("classes.dex")) {
+                        if (!file.equalsIgnoreCase("classes.dex")) {
                             try {
-                                switch(mDecodeSources) {
+                                switch (mDecodeSources) {
                                     case DECODE_SOURCES_NONE:
                                         mAndrolib.decodeSourcesRaw(mApkFile, outDir, file);
                                         break;
                                     case DECODE_SOURCES_SMALI:
                                         mAndrolib.decodeSourcesSmali(mApkFile, outDir, file, mBakDeb, mApi);
                                         break;
-				    case DECODE_SOURCES_SMALI_ONLY_MAIN_CLASSES:
-                                     	if (file.startsWith("classes") && file.endsWith(".dex")) {
-                                    	    mAndrolib.decodeSourcesSmali(mApkFile, outDir, file, mBakDeb, mApi);
-					 } else {
-                                       	    mAndrolib.decodeSourcesRaw(mApkFile, outDir, file);
-                                     	}   
-                                     	break;
+                                    case DECODE_SOURCES_SMALI_ONLY_MAIN_CLASSES:
+                                        if (file.startsWith("classes") && file.endsWith(".dex")) {
+                                            mAndrolib.decodeSourcesSmali(mApkFile, outDir, file, mBakDeb, mApi);
+                                        } else {
+                                            mAndrolib.decodeSourcesRaw(mApkFile, outDir, file);
+                                        }
+                                        break;
                                 }
                             } catch (Throwable e) {
                                 LOGGER.warning(e.getMessage());
@@ -195,7 +195,8 @@ public class ApkDecoder {
         } finally {
             try {
                 mApkFile.close();
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
         }
     }
 
@@ -227,7 +228,7 @@ public class ApkDecoder {
         mDecodeAssets = mode;
     }
 
-    public void setAnalysisMode(boolean mode, boolean pass) throws AndrolibException{
+    public void setAnalysisMode(boolean mode, boolean pass) throws AndrolibException {
         mAnalysisMode = mode;
 
         // only set mResTable, once it exists
@@ -254,6 +255,10 @@ public class ApkDecoder {
         mBakDeb = bakdeb;
     }
 
+    public void setSmaliSingleFolder(boolean smaliSingleFolder) {
+        mAndrolib.apkOptions.smaliSingleFolder = smaliSingleFolder;
+    }
+
     public void setForceDelete(boolean forceDelete) {
         mForceDelete = forceDelete;
     }
@@ -274,7 +279,7 @@ public class ApkDecoder {
         if (mResTable == null) {
             boolean hasResources = hasResources();
             boolean hasManifest = hasManifest();
-            if (! (hasManifest || hasResources)) {
+            if (!(hasManifest || hasResources)) {
                 throw new AndrolibException(
                         "Apk doesn't contain either AndroidManifest.xml file or resources.arsc file");
             }
@@ -296,7 +301,7 @@ public class ApkDecoder {
             Set<String> files = mApkFile.getDirectory().getFiles(false);
             for (String file : files) {
                 if (file.endsWith(".dex")) {
-                    if (! file.equalsIgnoreCase("classes.dex")) {
+                    if (!file.equalsIgnoreCase("classes.dex")) {
                         return true;
                     }
                 }
@@ -424,7 +429,8 @@ public class ApkDecoder {
         int id = getResTable().getPackageId();
         try {
             id = getResTable().getPackage(renamed).getId();
-        } catch (UndefinedResObject ignored) {}
+        } catch (UndefinedResObject ignored) {
+        }
 
         if (Strings.isNullOrEmpty(original)) {
             return;

@@ -85,7 +85,7 @@ public class Androlib {
             throws AndrolibException {
         try {
             File smaliDir;
-            if (filename.equalsIgnoreCase("classes.dex")) {
+            if (filename.equalsIgnoreCase("classes.dex") || apkOptions.smaliSingleFolder) {
                 smaliDir = new File(outDir, SMALI_DIRNAME);
             } else {
                 smaliDir = new File(outDir, SMALI_DIRNAME + "_" + filename.substring(0, filename.indexOf(".")));

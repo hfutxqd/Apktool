@@ -115,6 +115,11 @@ public class Main {
         if (cli.hasOption("only-main-classes")) {
             decoder.setDecodeSources(ApkDecoder.DECODE_SOURCES_SMALI_ONLY_MAIN_CLASSES);
         }
+
+        if (cli.hasOption("smali-single-folder")) {
+            decoder.setSmaliSingleFolder(true);
+        }
+
         if (cli.hasOption("d") || cli.hasOption("debug")) {
             System.err.println("SmaliDebugging has been removed in 2.1.0 onward. Please see: https://github.com/iBotPeaches/Apktool/issues/1061");
             System.exit(1);
@@ -317,6 +322,11 @@ public class Main {
                 .desc("Only disassemble the main dex classes (classes[0-9]*.dex) in the root.")
                 .build();
 
+        Option smaliSingleFolderOption = Option.builder()
+                .longOpt("smali-single-folder")
+                .desc("Disassemble all dex classes into single folder.")
+                .build();
+
         Option noResOption = Option.builder("r")
                 .longOpt("no-res")
                 .desc("Do not decode resources.")
@@ -458,7 +468,6 @@ public class Main {
             DecodeOptions.addOption(apiLevelOption);
             DecodeOptions.addOption(noAssetOption);
             DecodeOptions.addOption(forceManOption);
-
             BuildOptions.addOption(apiLevelOption);
             BuildOptions.addOption(debugBuiOption);
             BuildOptions.addOption(aaptOption);
@@ -466,6 +475,7 @@ public class Main {
             BuildOptions.addOption(aapt2Option);
             BuildOptions.addOption(noCrunchOption);
         }
+
 
         // add global options
         normalOptions.addOption(versionOption);
@@ -478,6 +488,7 @@ public class Main {
         DecodeOptions.addOption(forceDecOption);
         DecodeOptions.addOption(noSrcOption);
         DecodeOptions.addOption(noResOption);
+        DecodeOptions.addOption(smaliSingleFolderOption);
 
         // add basic build options
         BuildOptions.addOption(outputBuiOption);
