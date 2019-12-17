@@ -190,6 +190,8 @@ public class ApkDecoder {
             mAndrolib.recordUncompressedFiles(mApkFile, mUncompressedFiles);
             mAndrolib.writeOriginalFiles(mApkFile, outDir);
             writeMetaFile();
+        } catch (OutDirExistsException | InFileNotFoundException e) {
+            throw e;
         } catch (Exception ex) {
             Logger.getGlobal().warning(ex.getMessage());
         } finally {
