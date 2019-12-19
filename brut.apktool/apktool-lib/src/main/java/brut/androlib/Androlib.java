@@ -87,11 +87,14 @@ public class Androlib {
             File smaliDir;
             if (filename.equalsIgnoreCase("classes.dex") || apkOptions.smaliSingleFolder) {
                 smaliDir = new File(outDir, SMALI_DIRNAME);
+                if (!smaliDir.exists()) {
+                    smaliDir.mkdirs();
+                }
             } else {
                 smaliDir = new File(outDir, SMALI_DIRNAME + "_" + filename.substring(0, filename.indexOf(".")));
+                OS.rmdir(smaliDir);
+                smaliDir.mkdirs();
             }
-            OS.rmdir(smaliDir);
-            smaliDir.mkdirs();
             LOGGER.info("Baksmaling " + filename + "...");
             SmaliDecoder.decode(apkFile, smaliDir, filename, bakdeb, api);
         } catch (BrutException ex) {
