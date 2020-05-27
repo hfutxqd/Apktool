@@ -17,15 +17,21 @@
 package brut.androlib.res.data.value;
 
 import android.util.TypedValue;
+import brut.androlib.Androlib;
 import brut.androlib.AndrolibException;
 import brut.androlib.res.data.ResPackage;
 import brut.androlib.res.data.ResTypeSpec;
 import brut.util.Duo;
 
+import java.util.logging.Logger;
+
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  */
 public class ResValueFactory {
+
+    private final static Logger LOGGER = Logger.getLogger(Androlib.class.getName());
+
     private final ResPackage mPackage;
 
     public ResValueFactory(ResPackage package_) {
@@ -115,8 +121,8 @@ public class ResValueFactory {
         if (ResTypeSpec.RES_TYPE_NAME_ATTR.equals(resTypeName)) {
             return new ResAttr(parentVal, 0, null, null, null);
         }
-
-        throw new AndrolibException("unsupported res type name for bags. Found: " + resTypeName);
+        LOGGER.warning("unsupported res type name for bags. Found: " + resTypeName);
+        return new ResBagValue(parentVal);
     }
 
     public ResReferenceValue newReference(int resID, String rawValue) {

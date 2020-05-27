@@ -34,12 +34,11 @@ public class ResResSpec {
     public ResResSpec(ResID id, String name, ResPackage pkg, ResTypeSpec type) {
         this.mId = id;
         String cleanName;
-
         ResResSpec resResSpec = type.getResSpecUnsafe(name);
         if (resResSpec != null) {
-            cleanName = name + "_APKTOOL_DUPLICATENAME_" + id.toString();
+            cleanName = name + "_" + id.toString();
         } else {
-            cleanName = ((name == null || name.isEmpty()) ? ("APKTOOL_DUMMYVAL_" + id.toString()) : name);
+            cleanName = ((name == null || name.isEmpty() || "(name removed)".equals(name)) ? ("noname_" + id.toString()) : name);
         }
         
         this.mName = cleanName;

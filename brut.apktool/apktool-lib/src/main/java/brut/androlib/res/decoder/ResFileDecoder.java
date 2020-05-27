@@ -117,8 +117,11 @@ public class ResFileDecoder {
                     return;
                 }
             }
-
-            decode(inDir, inFileName, outDir, outFileName, "xml");
+            if (".xml".equals(ext)) {
+                decode(inDir, inFileName, outDir, outFileName, "xml");
+            } else {
+                decode(inDir, inFileName, outDir, outFileName, "raw");
+            }
         } catch (RawXmlEncounteredException ex) {
             // If we got an error to decode XML, lets assume the file is in raw format.
             // This is a large assumption, that might increase runtime, but will save us for situations where
