@@ -1,6 +1,6 @@
-/**
- * Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- * Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ * Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ * Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,8 +63,7 @@ public class ApkDecoder {
         if (mApkFile != null) {
             try {
                 mApkFile.close();
-            } catch (IOException ignored) {
-            }
+            } catch (IOException ignored) {}
         }
 
         mApkFile = new ExtFile(apkFile);
@@ -431,8 +430,7 @@ public class ApkDecoder {
         int id = getResTable().getPackageId();
         try {
             id = getResTable().getPackage(renamed).getId();
-        } catch (UndefinedResObject ignored) {
-        }
+        } catch (UndefinedResObject ignored) {}
 
         if (Strings.isNullOrEmpty(original)) {
             return;
