@@ -166,11 +166,13 @@ public class Androlib {
         try {
             Directory unk = apkFile.getDirectory();
             Set<String> files = unk.getFiles(true);
-            String ext;
 
             for (String file : files) {
-                if (isAPKFileNames(file) && unk.getCompressionLevel(file) == 0 && unk.getSize(file) != 0) {
-                    ext = FilenameUtils.getExtension(file);
+                if (isAPKFileNames(file) && unk.getCompressionLevel(file) == 0) {
+                    String ext = "";
+                    if (unk.getSize(file) != 0) {
+                        ext = FilenameUtils.getExtension(file);
+                    }
 
                     if (ext.isEmpty() || !NO_COMPRESS_PATTERN.matcher(ext).find()) {
                         ext = file;
@@ -469,7 +471,12 @@ public class Androlib {
                 LOGGER.info("Building resources...");
 
                 if (apkOptions.debugMode) {
-                    ResXmlPatcher.removeApplicationDebugTag(new File(appDir, "AndroidManifest.xml"));
+                    if (apkOptions.isAapt2()) {
+                        LOGGER.info("Using aapt2 - setting 'debuggable' attribute to 'true' in AndroidManifest.xml");
+                        ResXmlPatcher.setApplicationDebugTagTrue(new File(appDir, "AndroidManifest.xml"));
+                    } else {
+                        ResXmlPatcher.removeApplicationDebugTag(new File(appDir, "AndroidManifest.xml"));
+                    }
                 }
 
                 File apkFile = File.createTempFile("APKTOOL", null);
