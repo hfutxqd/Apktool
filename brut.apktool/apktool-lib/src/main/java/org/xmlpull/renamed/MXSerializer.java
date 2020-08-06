@@ -628,7 +628,7 @@ public class MXSerializer implements XmlSerializer {
 			out.write(prefix);
 			out.write(':');
 		}
-		out.write(name);
+		out.write(name == null ? "" : name);
 		out.write('=');
 		out.write(attributeUseApostrophe ? '\'' : '"');
 		writeAttributeValue(value, out);

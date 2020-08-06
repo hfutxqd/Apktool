@@ -192,6 +192,7 @@ public class ApkDecoder {
         } catch (OutDirExistsException | InFileNotFoundException e) {
             throw e;
         } catch (Exception ex) {
+            ex.printStackTrace();
             Logger.getGlobal().warning(ex.getMessage());
         } finally {
             try {

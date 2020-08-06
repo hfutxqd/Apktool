@@ -86,12 +86,15 @@ public class XmlPullStreamDecoder implements ResStreamDecoder {
 
                 private boolean parseManifest(XmlPullParser pp)
                         throws AndrolibException {
-                    String attr_name;
+                    String attr_name, attr_value;
 
                     // read <manifest> for package:
                     for (int i = 0; i < pp.getAttributeCount(); i++) {
                         attr_name = pp.getAttributeName(i);
-
+                        attr_value = pp.getAttributeValue(i);
+                        if (attr_name == null || attr_value == null) {
+                            continue;
+                        }
                         if (attr_name.equalsIgnoreCase(("package"))) {
                             resTable.setPackageRenamed(pp.getAttributeValue(i));
                         } else if (attr_name.equalsIgnoreCase("versionCode")) {
