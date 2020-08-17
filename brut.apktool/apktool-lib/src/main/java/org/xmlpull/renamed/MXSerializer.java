@@ -606,6 +606,7 @@ public class MXSerializer implements XmlSerializer {
 		return this;
 	}
 
+	private static int unknownCount = 0;
 	@Override
 	public XmlSerializer attribute(String namespace, String name, String value)
 			throws IOException {
@@ -628,7 +629,7 @@ public class MXSerializer implements XmlSerializer {
 			out.write(prefix);
 			out.write(':');
 		}
-		out.write(name == null ? "" : name);
+		out.write(name == null ? "unknown_" + unknownCount++ : name);
 		out.write('=');
 		out.write(attributeUseApostrophe ? '\'' : '"');
 		writeAttributeValue(value, out);
