@@ -21,7 +21,7 @@ buildscript {
         options.encoding = "UTF-8"
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:6.0.0'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
     }
 }
 
@@ -31,7 +31,7 @@ plugins {
 
 apply from: 'gradle/functions.gradle'
 
-def apktoolversion_major = '2.4.2'
+def apktoolversion_major = '2.5.1'
 def apktoolversion_minor = 'SNAPSHOT'
 
 defaultTasks 'build', 'shadowJar', 'proguard'

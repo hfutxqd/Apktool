@@ -17,7 +17,7 @@
 package brut.androlib.res.data;
 
 import brut.androlib.AndrolibException;
-import brut.androlib.err.UndefinedResObject;
+import brut.androlib.err.UndefinedResObjectException;
 import java.util.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,11 +34,12 @@ public class ResResSpec {
     public ResResSpec(ResID id, String name, ResPackage pkg, ResTypeSpec type) {
         this.mId = id;
         String cleanName;
+
         ResResSpec resResSpec = type.getResSpecUnsafe(name);
         if (resResSpec != null) {
-            cleanName = name + "_" + id.toString();
+            cleanName = String.format("APKTOOL_DUPLICATE_%s_%s", type.toString(), id.toString());
         } else {
-            cleanName = ((name == null || name.isEmpty() || "(name removed)".equals(name)) ? ("noname_" + id.toString()) : name);
+            cleanName = ((name == null || name.isEmpty()) ? ("APKTOOL_DUMMYVAL_" + id.toString()) : name);
         }
         
         this.mName = cleanName;
@@ -57,7 +58,7 @@ public class ResResSpec {
     public ResResource getResource(ResConfigFlags config) throws AndrolibException {
         ResResource res = mResources.get(config);
         if (res == null) {
-            throw new UndefinedResObject(String.format("resource: spec=%s, config=%s", this, config));
+            throw new UndefinedResObjectException(String.format("resource: spec=%s, config=%s", this, config));
         }
         return res;
     }
